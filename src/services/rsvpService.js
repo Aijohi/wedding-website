@@ -32,9 +32,7 @@ export async function createRSVP({
       attendee_type: attendeeType,
       guest_count: 1,
     })
-    .select()
-    .single();
-
+    
   if (error) {
     console.error("RSVP submission error:", error);
 
