@@ -4,10 +4,16 @@ import SealedInvitation from "./components/SealedInvitation";
 import OpenInvitation from "./components/OpenInvitation";
 import RSVPForm from "./components/RSVPForm";
 import SuccessScreen from "./components/SuccessScreen";
+import RSVPClosed from "./components/RSVPClosed";
+
+import {
+  getRSVPAvailability,
+} from "./services/rsvpService";
 
 import "./App.css";
 
-const RSVP_STORAGE_KEY = "wedding-rsvp-confirmation-v2";
+const RSVP_STORAGE_KEY =
+  "wedding-rsvp-confirmation-v2";
 
 function getSavedRSVP() {
   try {
@@ -35,12 +41,24 @@ function App() {
     savedRSVP ? "success" : "sealed"
   );
 
-  function handleOpenInvitation() {
+  async function handleOpenInvitation() {
     setScreen("open");
   }
 
-  function handleReserveSeat() {
-    setScreen("rsvp");
+  async function handleReserveSeat() {
+    try {
+      const isAvailable =
+        await getRSVPAvailability();
+
+      setScreen(isAvailable ? "rsvp" : "closed");
+    } catch (error) {
+      console.error(
+        "RSVP availability check failed:",
+        error
+      );
+
+      setScreen("rsvp");
+    }
   }
 
   function handleCloseRSVP() {
@@ -54,7 +72,7 @@ function App() {
         JSON.stringify(guest)
       );
     } catch (error) {
-      console.error("Could not save RSVP locally:", error);
+      console.error("Could not save RSVP:", error);
     }
 
     setConfirmedGuest(guest);
@@ -80,6 +98,12 @@ function App() {
         <RSVPForm
           onClose={handleCloseRSVP}
           onSuccess={handleRSVPSuccess}
+        />
+      )}
+
+      {screen === "closed" && (
+        <RSVPClosed
+          onBack={() => setScreen("open")}
         />
       )}
 
