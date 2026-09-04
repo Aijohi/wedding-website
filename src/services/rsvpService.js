@@ -7,10 +7,7 @@ export async function getRSVPAvailability() {
 
   if (error) {
     console.error("Availability error:", error);
-
-    throw new Error(
-      "We could not check the available seats."
-    );
+    return true;
   }
 
   return Boolean(data);
@@ -21,58 +18,40 @@ export async function createRSVP({
   email,
   attendeeType,
 }) {
-  const cleanedName = fullName.trim();
-  const cleanedEmail = email.trim().toLowerCase();
+  const guest = {
+    fullName: fullName.trim(),
+    email: email.trim().toLowerCase(),
+    attendeeType,
+    guestCount: 1,
+    createdAt: new Date().toISOString(),
+  };
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("rsvps")
     .insert({
-      full_name: cleanedName,
-      email: cleanedEmail,
-      attendee_type: attendeeType,
-      guest_count: 1,
-    })
-    
+      full_name: guest.fullName,
+      email: guest.email,
+      attendee_type: guest.attendeeType,
+      guest_count: guest.guestCount,
+    });
+
   if (error) {
     console.error("RSVP submission error:", error);
 
     if (error.code === "23505") {
       throw new Error(
-        "A seat has already been reserved with this email address."
+        "This email has already been used to reserve a seat."
       );
     }
 
-    if (
-      error.message?.includes("RSVP_LIMIT_REACHED")
-    ) {
-      throw new Error(
-        "Our guest list is now full. We are unable to accept more responses."
-      );
-    }
-
-    if (error.code === "23514") {
-      throw new Error(
-        "Please enter a valid email address."
-      );
-    }
-
-    if (error.code === "42501") {
-      throw new Error(
-        "We could not save your response. Please try again."
-      );
+    if (error.message?.includes("RSVP_LIMIT_REACHED")) {
+      throw new Error("Our guest list is now full.");
     }
 
     throw new Error(
-      "We could not reserve your seat. Please try again."
+      "Please check your connection and try again."
     );
   }
 
-  return {
-    id: data.id,
-    fullName: data.full_name,
-    email: data.email,
-    attendeeType: data.attendee_type,
-    guestCount: data.guest_count,
-    createdAt: data.created_at,
-  };
+  return guest;
 }
