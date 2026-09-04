@@ -55,7 +55,7 @@ function SuccessScreen({
         </div>
 
         <p className="success-card__signature">
-          — OMO &amp; IK
+          OMO &amp; IK
         </p>
 
         <a

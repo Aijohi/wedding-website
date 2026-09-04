@@ -263,7 +263,7 @@ function RSVPForm({ onClose, onSuccess }) {
             </p>
 
             <p className="rsvp-form__signature">
-              — OMO &amp; IK
+              OMO &amp; IK
             </p>
           </footer>
 

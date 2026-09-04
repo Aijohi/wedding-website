@@ -13,7 +13,7 @@ import {
 import "./App.css";
 
 const RSVP_STORAGE_KEY =
-  "wedding-rsvp-confirmation-v3";
+  "wedding-rsvp-confirmation-v4";
 
 function getSavedRSVP() {
   try {
