@@ -23,6 +23,7 @@
   width: min(100%, 475px);
   padding: 60px clamp(24px, 5vw, 48px) 42px;
   border: 1px solid rgba(53, 66, 31, 0.12);
+  border-radius: 16px;
   background-color: #f3f7f0;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
 
@@ -304,6 +305,7 @@
   .rsvp-form {
     width: 100%;
     padding: 56px 22px 32px;
+    border-radius: 14px;
   }
 
   .rsvp-form__content {
@@ -333,6 +335,7 @@
 @media (max-width: 360px) {
   .rsvp-form {
     padding-inline: 16px;
+    border-radius: 12px;
   }
 
   .rsvp-form__title {

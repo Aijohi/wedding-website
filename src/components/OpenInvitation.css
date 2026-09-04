@@ -4,13 +4,13 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
-  padding: clamp(20px, 4vh, 48px) 16px;
+  padding: clamp(16px, 4vh, 48px);
   overflow: hidden;
   background-color: #0a1003;
   background-image:
     linear-gradient(
-      rgba(10, 16, 3, 0.82),
-      rgba(10, 16, 3, 0.82)
+      rgba(10, 16, 3, 0.84),
+      rgba(10, 16, 3, 0.84)
     ),
     var(--invitation-background);
   background-repeat: no-repeat;
@@ -20,11 +20,11 @@
 
 .open-invitation__artwork {
   position: relative;
-  width: min(92vw, 560px, 64svh);
+  width: min(92vw, 580px, 70svh);
   line-height: 1;
-  transform: translateY(18px) scale(0.98);
+  transform: translateY(20px) scale(0.98);
   transform-origin: center bottom;
-  animation: open-envelope-arrive 500ms
+  animation: open-envelope-arrive 550ms
     cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -33,14 +33,14 @@
   width: 100%;
   height: auto;
   filter: drop-shadow(
-    0 22px 32px rgba(0, 0, 0, 0.35)
+    0 24px 36px rgba(0, 0, 0, 0.38)
   );
 }
 
 .open-invitation__card-content {
   position: absolute;
   z-index: 2;
-  top: 15.75%;
+  top: 15.5%;
   left: 50%;
   display: flex;
   flex-direction: column;
@@ -49,31 +49,33 @@
   color: #35421f;
   text-align: center;
   opacity: 0;
-  transform: translateX(-50%) translateY(30px);
-  animation: invitation-card-rise 650ms
-    cubic-bezier(0.22, 1, 0.36, 1) 180ms forwards;
+  transform: translateX(-50%) translateY(34px);
+  animation: invitation-card-rise 750ms
+    cubic-bezier(0.16, 1, 0.3, 1) 180ms forwards;
 }
 
 .open-invitation__icon {
-  width: clamp(34px, 7%, 44px);
+  width: clamp(36px, 7%, 46px);
   height: auto;
   margin-bottom: 10px;
 }
 
 .open-invitation__introduction {
   margin: 0 0 7px;
-  font-size: clamp(0.5625rem, 0.75vw, 0.6875rem);
+  color: #647052;
+  font-size: clamp(0.625rem, 0.75vw, 0.75rem);
   font-weight: 500;
   line-height: 1.3;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .open-invitation__names {
   margin: 0 0 12px;
-  font-size: clamp(0.9375rem, 1.45vw, 1.25rem);
+  color: #35421f;
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
@@ -82,8 +84,9 @@
 }
 
 .open-invitation__date {
-  margin: 0 0 13px;
-  font-size: clamp(0.5625rem, 0.75vw, 0.6875rem);
+  margin: 0 0 14px;
+  color: #536044;
+  font-size: clamp(0.625rem, 0.75vw, 0.75rem);
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: 0.03em;
@@ -91,42 +94,59 @@
 }
 
 .open-invitation__message {
-  max-width: 96%;
-  margin: 0 0 11px;
-  font-size: clamp(0.625rem, 0.82vw, 0.75rem);
+  max-width: 94%;
+  margin: 0 0 12px;
+  color: #536044;
+  font-size: clamp(0.6875rem, 0.85vw, 0.8125rem);
   font-weight: 400;
   font-style: italic;
-  line-height: 1.42;
+  line-height: 1.45;
 }
 
 .open-invitation__signature {
-  margin: 0 0 13px;
-  font-size: clamp(0.5625rem, 0.7vw, 0.625rem);
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0 0 15px;
+  color: #647052;
+  font-size: clamp(0.5625rem, 0.7vw, 0.6875rem);
   line-height: 1.3;
-  letter-spacing: 0.02em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.open-invitation__signature > span {
+  font-weight: 400;
+}
+
+.open-invitation__signature strong {
+  color: #45533f;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .open-invitation__reserve-button {
-  min-width: 58%;
-  padding: 9px 18px;
+  min-width: 54%;
+  padding: 10px 18px;
   border: 1px solid transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   background-color: #45533f;
   color: #ffffff;
-  font-size: clamp(0.5625rem, 0.8vw, 0.6875rem);
+  font-size: clamp(0.625rem, 0.75vw, 0.75rem);
   font-weight: 600;
   line-height: 1.2;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
   opacity: 0;
   animation: reserve-button-appear 450ms
-    ease-out 700ms forwards;
+    ease-out 800ms forwards;
   transition:
-    background-color 200ms ease,
-    transform 200ms ease;
+    background-color 180ms ease,
+    transform 180ms ease;
 }
 
 .open-invitation__reserve-button:hover {
@@ -145,7 +165,7 @@
 
 @keyframes open-envelope-arrive {
   from {
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(20px) scale(0.98);
   }
 
   to {
@@ -156,7 +176,7 @@
 @keyframes invitation-card-rise {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(30px);
+    transform: translateX(-50%) translateY(34px);
   }
 
   to {
@@ -180,7 +200,7 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .open-invitation__artwork {
-    width: min(86vw, 520px, 66svh);
+    width: min(88vw, 540px, 72svh);
   }
 
   .open-invitation__card-content {
@@ -191,69 +211,11 @@
 /* Mobile */
 @media (max-width: 767px) {
   .open-invitation {
-    padding: 16px 10px;
+    padding: 12px 8px;
   }
 
   .open-invitation__artwork {
-    width: min(96vw, 430px, 66svh);
-  }
-
-  .open-invitation__card-content {
-    top: 15.75%;
-    width: 70%;
-  }
-
-  .open-invitation__icon {
-    width: 34px;
-    margin-bottom: 9px;
-  }
-
-  .open-invitation__introduction {
-    margin-bottom: 6px;
-    font-size: 0.625rem;
-    line-height: 1.3;
-  }
-
-  .open-invitation__names {
-    margin-bottom: 10px;
-    font-size: 0.9375rem;
-    line-height: 1.2;
-  }
-
-  .open-invitation__date {
-    margin-bottom: 11px;
-    font-size: 0.5625rem;
-    line-height: 1.35;
-  }
-
-  .open-invitation__message {
-    max-width: 96%;
-    margin-bottom: 9px;
-    font-size: 0.625rem;
-    line-height: 1.4;
-  }
-
-  .open-invitation__signature {
-    margin-bottom: 10px;
-    font-size: 0.5625rem;
-    line-height: 1.3;
-  }
-
-  .open-invitation__reserve-button {
-    min-width: 64%;
-    padding: 9px 13px;
-    font-size: 0.625rem;
-  }
-}
-
-/* Small mobile */
-@media (max-width: 375px) {
-  .open-invitation {
-    padding-inline: 8px;
-  }
-
-  .open-invitation__artwork {
-    width: min(96vw, 350px, 65svh);
+    width: min(96vw, 440px, 74svh);
   }
 
   .open-invitation__card-content {
@@ -262,7 +224,59 @@
   }
 
   .open-invitation__icon {
-    width: 31px;
+    width: 38px;
+    margin-bottom: 9px;
+  }
+
+  .open-invitation__introduction {
+    margin-bottom: 6px;
+    font-size: 0.625rem;
+  }
+
+  .open-invitation__names {
+    margin-bottom: 10px;
+    font-size: 1.0625rem;
+  }
+
+  .open-invitation__date {
+    margin-bottom: 11px;
+    font-size: 0.59375rem;
+  }
+
+  .open-invitation__message {
+    max-width: 94%;
+    margin-bottom: 10px;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+  }
+
+  .open-invitation__signature {
+    gap: 3px;
+    margin-bottom: 12px;
+    font-size: 0.59375rem;
+    white-space: nowrap;
+  }
+
+  .open-invitation__reserve-button {
+    min-width: 58%;
+    padding: 9px 14px;
+    font-size: 0.625rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 375px) {
+  .open-invitation__artwork {
+    width: min(96vw, 350px, 72svh);
+  }
+
+  .open-invitation__card-content {
+    top: 15.25%;
+    width: 73%;
+  }
+
+  .open-invitation__icon {
+    width: 34px;
     margin-bottom: 7px;
   }
 
@@ -273,7 +287,7 @@
 
   .open-invitation__names {
     margin-bottom: 8px;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
   }
 
   .open-invitation__date {
@@ -283,69 +297,69 @@
 
   .open-invitation__message {
     margin-bottom: 8px;
-    font-size: 0.59375rem;
-    line-height: 1.38;
+    font-size: 0.625rem;
   }
 
   .open-invitation__signature {
-    margin-bottom: 8px;
+    margin-bottom: 9px;
     font-size: 0.53125rem;
   }
 
   .open-invitation__reserve-button {
-    min-width: 66%;
-    padding: 8px 11px;
-    font-size: 0.59375rem;
+    min-width: 60%;
+    padding: 8px 12px;
+    font-size: 0.5625rem;
   }
 }
 
 /* Short screens and landscape phones */
 @media (max-height: 700px) {
   .open-invitation {
-    padding-block: 10px;
+    padding-block: 8px;
   }
 
   .open-invitation__artwork {
-    width: min(92vw, 60svh);
+    width: min(92vw, 65svh);
   }
 
   .open-invitation__card-content {
-    top: 15.5%;
+    top: 15.25%;
   }
 
   .open-invitation__icon {
-    width: 30px;
-    margin-bottom: 6px;
+    width: 29px;
+    margin-bottom: 5px;
   }
 
-  .open-invitation__introduction,
-  .open-invitation__date,
-  .open-invitation__signature {
+  .open-invitation__introduction {
+    margin-bottom: 4px;
     font-size: 0.5rem;
   }
 
   .open-invitation__names {
-    margin-bottom: 7px;
+    margin-bottom: 6px;
     font-size: 0.8125rem;
   }
 
   .open-invitation__date {
-    margin-bottom: 7px;
+    margin-bottom: 6px;
+    font-size: 0.46875rem;
   }
 
   .open-invitation__message {
-    margin-bottom: 7px;
-    font-size: 0.5625rem;
+    margin-bottom: 6px;
+    font-size: 0.53125rem;
     line-height: 1.35;
   }
 
   .open-invitation__signature {
-    margin-bottom: 7px;
+    margin-bottom: 6px;
+    font-size: 0.46875rem;
   }
 
   .open-invitation__reserve-button {
-    padding: 7px 10px;
-    font-size: 0.5625rem;
+    padding: 6px 11px;
+    font-size: 0.5rem;
   }
 }
 
@@ -355,6 +369,9 @@
   .open-invitation__reserve-button {
     animation: none;
     opacity: 1;
+  }
+
+  .open-invitation__artwork {
     transform: none;
   }
 
@@ -364,5 +381,54 @@
 
   .open-invitation__reserve-button {
     transition: none;
+  }
+}
+
+/* iPhone 12 Pro and similar 390px phones */
+@media (min-width: 376px) and (max-width: 400px) and (min-height: 800px) {
+  .open-invitation__artwork {
+    width: min(98vw, 382px);
+  }
+
+  .open-invitation__card-content {
+    top: 15.25%;
+    width: 74%;
+  }
+
+  .open-invitation__icon {
+    width: 38px;
+    margin-bottom: 8px;
+  }
+
+  .open-invitation__introduction {
+    margin-bottom: 6px;
+    font-size: 0.625rem;
+  }
+
+  .open-invitation__names {
+    margin-bottom: 9px;
+    font-size: 1.125rem;
+  }
+
+  .open-invitation__date {
+    margin-bottom: 10px;
+    font-size: 0.59375rem;
+  }
+
+  .open-invitation__message {
+    margin-bottom: 9px;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+  }
+
+  .open-invitation__signature {
+    margin-bottom: 10px;
+    font-size: 0.59375rem;
+  }
+
+  .open-invitation__reserve-button {
+    min-width: 60%;
+    padding: 9px 13px;
+    font-size: 0.625rem;
   }
 }

@@ -6,6 +6,7 @@ import {
 
 import rsvpBackground from "../assets/images/rsvp-background.png";
 import { submitRSVP } from "../services/rsvpService";
+
 import "./RSVPForm.css";
 
 function RSVPForm({ onClose, onSuccess }) {
@@ -19,7 +20,9 @@ function RSVPForm({ onClose, onSuccess }) {
     event.preventDefault();
     setFormError("");
 
-    const cleanedName = fullName.trim();
+    const cleanedName = fullName
+      .trim()
+      .replace(/\s+/g, " ");
 
     if (!cleanedName) {
       setFormError("Please enter your full name.");
@@ -44,11 +47,6 @@ function RSVPForm({ onClose, onSuccess }) {
 
       await submitRSVP(submittedRSVP);
 
-      localStorage.setItem(
-        "wedding-rsvp-confirmation",
-        JSON.stringify(submittedRSVP)
-      );
-
       onSuccess(submittedRSVP);
     } catch (error) {
       console.error("RSVP submission error:", error);
@@ -69,7 +67,10 @@ function RSVPForm({ onClose, onSuccess }) {
         "--rsvp-background": `url(${rsvpBackground})`,
       }}
     >
-      <form className="rsvp-form" onSubmit={handleSubmit}>
+      <form
+        className="rsvp-form"
+        onSubmit={handleSubmit}
+      >
         <button
           className="rsvp-form__close"
           type="button"
@@ -186,7 +187,10 @@ function RSVPForm({ onClose, onSuccess }) {
           </div>
 
           {formError && (
-            <p className="rsvp-form__error" role="alert">
+            <p
+              className="rsvp-form__error"
+              role="alert"
+            >
               {formError}
             </p>
           )}
@@ -197,8 +201,8 @@ function RSVPForm({ onClose, onSuccess }) {
             </p>
 
             <p className="rsvp-form__signature">
-              With love, Omo &amp; IK
-            </p>
+            — Omo &amp; IK
+          </p>
           </footer>
 
           <button

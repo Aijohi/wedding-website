@@ -1,6 +1,7 @@
 import invitationBackground from "../assets/images/invitation-background.png";
 import openEnvelope from "../assets/images/open-envelope.svg";
 import weddingIcon from "../assets/images/wedding-icon.svg";
+
 import "./OpenInvitation.css";
 
 function OpenInvitation({ onReserve }) {
@@ -34,19 +35,18 @@ function OpenInvitation({ onReserve }) {
           </h1>
 
           <p className="open-invitation__date">
-            Saturday · 12 December 2026
+            Saturday, 12 December 2026
           </p>
 
           <p className="open-invitation__message">
-            We’re finally doing it. From two families to one, we cannot
-            wait to celebrate with the people who mean the most to us.
-            Come feast, dance, and toast to forever with us.
+            We’re finally doing it! We can’t wait to
+            celebrate this special day with you.
           </p>
 
           <p className="open-invitation__signature">
-            With love, Omo &amp; IK
+          <span aria-hidden="true">—</span>
+          <strong>Omo &amp; IK</strong>
           </p>
-
           <button
             className="open-invitation__reserve-button"
             type="button"
