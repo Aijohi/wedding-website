@@ -7,7 +7,7 @@ import SuccessScreen from "./components/SuccessScreen";
 
 import "./App.css";
 
-const RSVP_STORAGE_KEY = "wedding-rsvp-confirmation";
+const RSVP_STORAGE_KEY = "wedding-rsvp-confirmation-v2";
 
 function getSavedRSVP() {
   try {
