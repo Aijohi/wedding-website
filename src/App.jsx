@@ -13,7 +13,7 @@ import {
 import "./App.css";
 
 const RSVP_STORAGE_KEY =
-  "wedding-rsvp-confirmation-v2";
+  "wedding-rsvp-confirmation-v3";
 
 function getSavedRSVP() {
   try {
@@ -21,27 +21,35 @@ function getSavedRSVP() {
       RSVP_STORAGE_KEY
     );
 
-    return savedRSVP ? JSON.parse(savedRSVP) : null;
+    if (!savedRSVP) {
+      return null;
+    }
+
+    return JSON.parse(savedRSVP);
   } catch (error) {
-    console.error("Could not read saved RSVP:", error);
+    console.error(
+      "Could not read the saved RSVP:",
+      error
+    );
+
     return null;
   }
 }
 
 function App() {
-  const [savedRSVP] = useState(() => getSavedRSVP());
+  const initialGuest = getSavedRSVP();
 
   const [confirmedGuest, setConfirmedGuest] =
-    useState(savedRSVP);
+    useState(initialGuest);
 
   const [isReturningGuest, setIsReturningGuest] =
-    useState(Boolean(savedRSVP));
+    useState(Boolean(initialGuest));
 
   const [screen, setScreen] = useState(
-    savedRSVP ? "success" : "sealed"
+    initialGuest ? "success" : "sealed"
   );
 
-  async function handleOpenInvitation() {
+  function handleOpenInvitation() {
     setScreen("open");
   }
 
@@ -50,10 +58,12 @@ function App() {
       const isAvailable =
         await getRSVPAvailability();
 
-      setScreen(isAvailable ? "rsvp" : "closed");
+      setScreen(
+        isAvailable ? "rsvp" : "closed"
+      );
     } catch (error) {
       console.error(
-        "RSVP availability check failed:",
+        "Could not check RSVP availability:",
         error
       );
 
@@ -65,6 +75,10 @@ function App() {
     setScreen("open");
   }
 
+  function handleBackToInvitation() {
+    setScreen("open");
+  }
+
   function handleRSVPSuccess(guest) {
     try {
       localStorage.setItem(
@@ -72,7 +86,10 @@ function App() {
         JSON.stringify(guest)
       );
     } catch (error) {
-      console.error("Could not save RSVP:", error);
+      console.error(
+        "Could not save the RSVP locally:",
+        error
+      );
     }
 
     setConfirmedGuest(guest);
@@ -101,16 +118,16 @@ function App() {
         />
       )}
 
-      {screen === "closed" && (
-        <RSVPClosed
-          onBack={() => setScreen("open")}
-        />
-      )}
-
-      {screen === "success" && confirmedGuest && (
+      {screen === "success" && (
         <SuccessScreen
           guest={confirmedGuest}
           isReturningGuest={isReturningGuest}
+        />
+      )}
+
+      {screen === "closed" && (
+        <RSVPClosed
+          onBack={handleBackToInvitation}
         />
       )}
     </main>

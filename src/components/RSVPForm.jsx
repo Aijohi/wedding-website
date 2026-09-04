@@ -5,54 +5,90 @@ import {
 } from "react-icons/io5";
 
 import rsvpBackground from "../assets/images/rsvp-background.png";
-import { submitRSVP } from "../services/rsvpService";
+import { createRSVP } from "../services/rsvpService";
 
 import "./RSVPForm.css";
 
 function RSVPForm({ onClose, onSuccess }) {
-  const [fullName, setFullName] = useState("");
-  const [attendeeType, setAttendeeType] = useState("");
-  const [guestCount, setGuestCount] = useState("1");
-  const [formError, setFormError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    attendeeType: "",
+    guestCount: "1",
+  });
+
+  const [errorMessage, setErrorMessage] =
+    useState("");
+
+  const [isSubmitting, setIsSubmitting] =
+    useState(false);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormData((currentFormData) => ({
+      ...currentFormData,
+      [name]: value,
+    }));
+
+    if (errorMessage) {
+      setErrorMessage("");
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setFormError("");
+    setErrorMessage("");
 
-    const cleanedName = fullName
+    const fullName = formData.fullName.trim();
+    const email = formData.email
       .trim()
-      .replace(/\s+/g, " ");
+      .toLowerCase();
 
-    if (!cleanedName) {
-      setFormError("Please enter your full name.");
-      return;
-    }
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!attendeeType) {
-      setFormError(
-        "Please select whether you are attending as family or friend."
+    if (fullName.length < 2) {
+      setErrorMessage(
+        "Please enter your full name."
       );
       return;
     }
 
-    const submittedRSVP = {
-      fullName: cleanedName,
-      attendeeType,
-      guestCount: Number(guestCount),
-    };
+    if (!email) {
+      setErrorMessage(
+        "Please enter your email address."
+      );
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      setErrorMessage(
+        "Please enter a valid email address."
+      );
+      return;
+    }
+
+    if (!formData.attendeeType) {
+      setErrorMessage(
+        "Please select whether you are attending as family or a friend."
+      );
+      return;
+    }
 
     try {
       setIsSubmitting(true);
 
-      await submitRSVP(submittedRSVP);
+      const guest = await createRSVP({
+        fullName,
+        email,
+        attendeeType: formData.attendeeType,
+      });
 
-      onSuccess(submittedRSVP);
+      onSuccess(guest);
     } catch (error) {
-      console.error("RSVP submission error:", error);
-
-      setFormError(
-        error?.message ||
+      setErrorMessage(
+        error.message ||
           "We could not reserve your seat. Please try again."
       );
     } finally {
@@ -70,15 +106,16 @@ function RSVPForm({ onClose, onSuccess }) {
       <form
         className="rsvp-form"
         onSubmit={handleSubmit}
+        noValidate
       >
         <button
-          className="rsvp-form__close"
           type="button"
+          className="rsvp-form__close"
           onClick={onClose}
           aria-label="Close RSVP form"
           disabled={isSubmitting}
         >
-          <IoCloseOutline aria-hidden="true" />
+          <IoCloseOutline />
         </button>
 
         <div className="rsvp-form__content">
@@ -96,22 +133,20 @@ function RSVPForm({ onClose, onSuccess }) {
             <div className="rsvp-form__field">
               <label
                 className="rsvp-form__label"
-                htmlFor="full-name"
+                htmlFor="fullName"
               >
                 Full name
               </label>
 
               <input
                 className="rsvp-form__input"
-                id="full-name"
+                id="fullName"
                 name="fullName"
                 type="text"
-                value={fullName}
-                onChange={(event) =>
-                  setFullName(event.target.value)
-                }
                 placeholder="e.g. Aijohi Otu"
                 autoComplete="name"
+                value={formData.fullName}
+                onChange={handleChange}
                 disabled={isSubmitting}
                 required
               />
@@ -120,7 +155,30 @@ function RSVPForm({ onClose, onSuccess }) {
             <div className="rsvp-form__field">
               <label
                 className="rsvp-form__label"
-                htmlFor="attendee-type"
+                htmlFor="email"
+              >
+                Email address
+              </label>
+
+              <input
+                className="rsvp-form__input"
+                id="email"
+                name="email"
+                type="email"
+                inputMode="email"
+                placeholder="e.g. aijohi@example.com"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                required
+              />
+            </div>
+
+            <div className="rsvp-form__field">
+              <label
+                className="rsvp-form__label"
+                htmlFor="attendeeType"
               >
                 I am attending as
               </label>
@@ -128,12 +186,10 @@ function RSVPForm({ onClose, onSuccess }) {
               <div className="rsvp-form__select-wrapper">
                 <select
                   className="rsvp-form__select"
-                  id="attendee-type"
+                  id="attendeeType"
                   name="attendeeType"
-                  value={attendeeType}
-                  onChange={(event) =>
-                    setAttendeeType(event.target.value)
-                  }
+                  value={formData.attendeeType}
+                  onChange={handleChange}
                   disabled={isSubmitting}
                   required
                 >
@@ -141,8 +197,13 @@ function RSVPForm({ onClose, onSuccess }) {
                     Select an option
                   </option>
 
-                  <option value="family">Family</option>
-                  <option value="friend">Friend</option>
+                  <option value="family">
+                    Family
+                  </option>
+
+                  <option value="friend">
+                    Friend
+                  </option>
                 </select>
 
                 <IoChevronDownOutline
@@ -155,7 +216,7 @@ function RSVPForm({ onClose, onSuccess }) {
             <div className="rsvp-form__field">
               <label
                 className="rsvp-form__label"
-                htmlFor="guest-count"
+                htmlFor="guestCount"
               >
                 Invitation admits
               </label>
@@ -163,15 +224,15 @@ function RSVPForm({ onClose, onSuccess }) {
               <div className="rsvp-form__select-wrapper">
                 <select
                   className="rsvp-form__select"
-                  id="guest-count"
+                  id="guestCount"
                   name="guestCount"
-                  value={guestCount}
-                  onChange={(event) =>
-                    setGuestCount(event.target.value)
-                  }
+                  value={formData.guestCount}
+                  onChange={handleChange}
                   disabled={isSubmitting}
                 >
-                  <option value="1">1 guest</option>
+                  <option value="1">
+                    1 guest
+                  </option>
                 </select>
 
                 <IoChevronDownOutline
@@ -186,23 +247,24 @@ function RSVPForm({ onClose, onSuccess }) {
             </div>
           </div>
 
-          {formError && (
+          {errorMessage && (
             <p
               className="rsvp-form__error"
               role="alert"
             >
-              {formError}
+              {errorMessage}
             </p>
           )}
 
           <footer className="rsvp-form__footer">
             <p className="rsvp-form__date">
-              Come celebrate with us on 12 December 2026
+              Come celebrate with us on 12 December
+              2026
             </p>
 
             <p className="rsvp-form__signature">
-            — Omo &amp; IK
-          </p>
+              — OMO &amp; IK
+            </p>
           </footer>
 
           <button

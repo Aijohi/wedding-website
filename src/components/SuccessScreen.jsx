@@ -7,9 +7,13 @@ import rsvpBackground from "../assets/images/rsvp-background.png";
 
 import "./SuccessScreen.css";
 
-function SuccessScreen({ guest, isReturningGuest }) {
+function SuccessScreen({
+  guest,
+  isReturningGuest = false,
+}) {
   const firstName =
-    guest?.fullName?.trim().split(/\s+/)[0] || "Guest";
+    guest?.fullName?.trim().split(/\s+/)[0] ||
+    "Guest";
 
   return (
     <section
@@ -34,13 +38,14 @@ function SuccessScreen({ guest, isReturningGuest }) {
 
         <h1 className="success-card__title">
           {isReturningGuest
-            ? `Your seat is already saved, ${firstName}.`
-            : `Your seat is saved, ${firstName}.`}
+            ? "Your seat is already saved"
+            : "Your seat is saved"}
+          , <span>{firstName}.</span>
         </h1>
 
         <p className="success-card__message">
           {isReturningGuest
-            ? "You’re already on our guest list. You can download your wedding invitation again whenever you need it."
+            ? "Your reservation has already been confirmed. Your wedding invitation is available below."
             : "We’re so happy you’ll be celebrating with us. Your wedding invitation is ready below."}
         </p>
 
@@ -49,15 +54,14 @@ function SuccessScreen({ guest, isReturningGuest }) {
           <strong>1 guest</strong>
         </div>
 
-        <div className="success-card__signature">
-        <span aria-hidden="true">—</span>
-        <strong>Omo &amp; IK</strong>
-        </div>
+        <p className="success-card__signature">
+          — OMO &amp; IK
+        </p>
 
         <a
           className="success-card__download"
           href="/downloads/iom-wedding-invitation.pdf"
-          download="Omo-and-Ik-Wedding-Invitation.pdf"
+          download="Omo-and-IK-Wedding-Invitation.pdf"
         >
           <IoDownloadOutline aria-hidden="true" />
           <span>Download invitation</span>
